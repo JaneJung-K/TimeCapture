@@ -8,29 +8,68 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    @IBOutlet weak var uiTextField: UITextField!
+  
+    @IBOutlet weak var timeLabel: UILabel!
     
-    @IBAction func didTapAction(_ sender: Any) {
-       
-        var data : String = uiTextField.text!
+    var seconds = 0
+    var timer = Timer()
+    var timerIsOn = false
+    
+    @IBAction func startIsPressed(_ sender: UIButton) {
         
-        let secondViewController = self.storyboard?.instantiateViewController(identifier: "SecondViewController") as! SecondViewController
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (Selector(("updateTimer"))), userInfo: nil, repeats: true)
         
+    }
+    
+    @IBAction func doneIsPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "SecondViewController", sender: self)
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SecondViewController" {
+            let secondViewController = segue.destination as! SecondViewController
+          //  secondViewController.result = textFieldText
+        }
+  
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let alert = UIAlertController(title: "Grab Your Time", message: "Welcome to our App", preferredStyle: .alert)
+        let action = UIAlertAction(title: "START", style: .default, handler: nil)
+                                    
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
         // Do any additional setup after loading the view.
         print("First : viewDidLoad")
     }
+    
+    func updateTimer() {
+        
+        seconds += 1
+        timeLabel.text = "00:00:\(seconds)"
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     override func viewWillAppear(_ animated: Bool) {
         print("First : viewWillAppear")
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         print("First : viewDidAppear")
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -41,5 +80,7 @@ class ViewController: UIViewController {
         print("First : viewDidDisappear")
     }
 
+
 }
+
 
